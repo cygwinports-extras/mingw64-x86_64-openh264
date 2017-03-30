@@ -1,0 +1,24 @@
+CROSS_HOST="x86_64-w64-mingw32"
+inherit cross
+
+NAME="mingw64-x86_64-openh264"
+VERSION=1.6.0
+RELEASE=1
+CATEGORY="Devel"
+SUMMARY="WebRTC H.264 codec for Win64 toolchain"
+DESCRIPTION="OpenH264 is a codec library which supports H.264 encoding and
+decoding. It is suitable for use in real time applications such as WebRTC."
+HOMEPAGE="http://www.openh264.org/"
+SRC_URI="https://github.com/cisco/openh264/archive/v${VERSION}/openh264-${VERSION}.tar.gz"
+SRC_DIR="openh264-${VERSION}"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	cygmake CFLAGS_OPT="${CXXFLAGS}" PREFIX=${CROSS_PREFIX} OS=mingw_nt ARCH=${CROSS_HOST%%-*}
+}
+
+src_install() {
+	cd ${B}
+	cyginstall PREFIX=${CROSS_PREFIX} OS=mingw_nt ARCH=${CROSS_HOST%%-*}
+}
